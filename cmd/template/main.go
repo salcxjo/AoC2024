@@ -2,15 +2,13 @@ package main
 
 import (
 	"aoc2023/pkg/files"
-	"aoc2023/pkg/strings"
 )
 
-const Data = "data/day01"
+const Data = "data/day##"
 
 func solve1(file string) int {
 	res := 0
 	if err := files.ReadLines(file, func(line string) {
-		res += strings.FindFirstDigit(line)*10 + strings.FindLastDigit(line)
 	}); err != nil {
 		panic(err)
 	}
@@ -20,7 +18,6 @@ func solve1(file string) int {
 func solve2(file string) int {
 	res := 0
 	if err := files.ReadLines(file, func(line string) {
-		res += strings.FindFirstDigit(line, true)*10 + strings.FindLastDigit(line, true)
 	}); err != nil {
 		panic(err)
 	}
