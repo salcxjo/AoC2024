@@ -2,9 +2,12 @@ package main
 
 import (
 	"aoc2023/pkg/files"
+	"context"
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 )
 
 const Data = "data/day05"
@@ -117,9 +120,58 @@ func solve2(file string) int {
 		panic(err)
 	}
 
+	// I could come up with a more effective way to do this, but there's goroutines and channels and I'm lacking time right now and I'm lazy
+
 	lowest := -1
 
-	// TODO
+	total := 0
+	for _, seedv := range mapping["seeds"] {
+		total += seedv.length
+	}
+	var wg sync.WaitGroup
+	progress := 0
+	job := 0
+	for seed, seedv := range mapping["seeds"] {
+		wg.Add(1)
+		go func(job int, seed int, seedv Mapping) {
+			for lookup_seed := seed; lookup_seed < seed+seedv.length; lookup_seed++ {
+				current := lookup_seed
+				for _, table := range tables {
+					m, _ := mapping[table]
+					for idx, info := range m {
+						if idx <= current && current < idx+info.length {
+							current += info.target - idx
+							break
+						}
+					}
+				}
+				if lowest == -1 || current < lowest {
+					lowest = current
+				}
+				progress++
+			}
+			wg.Done()
+		}(job, seed, seedv)
+		job++
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	go func(ctx context.Context) {
+		ticker := time.NewTicker(1 * time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				// print(fmt.Sprintf("\r%d/%d (%.2f%%)", progress, total, float64(progress)/float64(total)*100.0))
+			}
+		}
+	}(ctx)
+
+	wg.Wait()
+	cancel()
 
 	return lowest
 }
