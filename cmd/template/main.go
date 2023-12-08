@@ -28,6 +28,6 @@ func main() {
 	print("Example 1: ", solve1(Data+"/example.txt"), "\n")
 	print("Solution 1: ", solve1(Data+"/input.txt"), "\n")
 
-	print("Example 1: ", solve2(Data+"/example.txt"), "\n")
+	print("Example 2: ", solve2(Data+"/example.txt"), "\n")
 	print("Solution 2: ", solve2(Data+"/input.txt"), "\n")
 }
