@@ -1,6 +1,6 @@
 # Advent of Code 2024
 
-This repository was cloned from @TheMihle(https://github.com/TheMihle/Advent-of-Code-2023) to store my attempts at AoC 2024 challenges.
+This repository was made to store my attempts at AoC 2024 challenges.
 
 I hope to keep good documentation and eventually make this code run from cmd for others to easily try their functionalities.
 
